@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FastFood Admin</string>
+    <string name="edit_busca">Digite o nome ou email...</string>
+    <string name="btn_pesquisa">Pesquisar</string>
 </resources>

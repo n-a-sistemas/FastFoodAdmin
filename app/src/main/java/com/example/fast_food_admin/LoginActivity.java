@@ -44,9 +44,10 @@ public class LoginActivity extends AppCompatActivity {
 
         if (!Boolean.parseBoolean(resultado)){
             criarLogin();
-        }else{
-            finish();
         }
+        /*else{
+            finish();
+        }*/
     }
 
     private void criarLogin(){
