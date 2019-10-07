@@ -9,28 +9,27 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fast_food_admin.R;
-import com.example.fast_food_admin.modelo.Usuario;
+import com.example.fast_food_admin.modelo.Administrador;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterPesquisa extends ArrayAdapter<Usuario> {
+public class AdapterPesquisa extends ArrayAdapter<Administrador> {
 
     //ListView
     private Context context;
-    private List<Usuario> usuarios;
+    private List<Administrador> administradors;
 
     //Declarando objetos
     private TextView textViewNome;
     private TextView textViewEmail;
 
-    public AdapterPesquisa(Context context, ArrayList<Usuario> list){
+    public AdapterPesquisa(Context context, ArrayList<Administrador> list){
         super (context, 0, list);
         this.context = context;
-        usuarios = list;
+        administradors = list;
     }
 
     @NonNull
@@ -45,13 +44,13 @@ public class AdapterPesquisa extends ArrayAdapter<Usuario> {
                     .inflate(R.layout.layout_list, parent, false);
         }
 
-        Usuario itemUsuario = usuarios.get(position);
+        Administrador itemAdministrador = administradors.get(position);
 
         TextView nome = listUsuarios.findViewById(R.id.text_view_nome);
-        nome.setText(itemUsuario.getNome());
+        nome.setText(itemAdministrador.getNome());
 
         TextView email = listUsuarios.findViewById(R.id.text_view_email);
-        email.setText(itemUsuario.getEmail());
+        email.setText(itemAdministrador.getEmail());
 
         return listUsuarios;
     }

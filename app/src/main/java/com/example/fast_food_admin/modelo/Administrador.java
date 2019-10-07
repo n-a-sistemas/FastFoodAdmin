@@ -1,6 +1,6 @@
 package com.example.fast_food_admin.modelo;
 
-public class Usuario {
+public class Administrador {
     private String uid;
     private String nome;
     private String email;
@@ -8,11 +8,11 @@ public class Usuario {
     private Integer vida;
     private Integer pontos;
 
-    public Usuario(){
+    public Administrador(){
 
     }
 
-    public Usuario(String uid, String nome, String email, boolean valido, Integer vida, Integer pontos) {
+    public Administrador(String uid, String nome, String email, boolean valido, Integer vida, Integer pontos) {
         this.uid = uid;
         this.nome = nome;
         this.email = email;
@@ -68,4 +68,5 @@ public class Usuario {
     public void setPontos(Integer pontos) {
         this.pontos = pontos;
     }
+
 }

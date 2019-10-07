@@ -3,8 +3,12 @@ package com.example.fast_food_admin;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,7 +16,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.fast_food_admin.adapter.AdapterPesquisa;
-import com.example.fast_food_admin.modelo.Usuario;
+import com.example.fast_food_admin.modelo.Administrador;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,21 +38,22 @@ public class MainActivity extends AppCompatActivity {
 
     //ListView
     private ListView listView;
-    private List<Usuario> usuarios = new ArrayList<>();
-    private ArrayAdapter<Usuario> arrayAdapterUsuario;
+    private List<Administrador> administradors = new ArrayList<>();
+    private ArrayAdapter<Administrador> arrayAdapterUsuario;
 
+    //SharedPreferences
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        chamaLogin();
-        conectaBanco();
-        pesquisaUsuario();
-
         editTextBusca = findViewById(R.id.edit_text_busca);
         listView = findViewById(R.id.list_view_usuarios);
+
+        chamaLogin();
+        conectaBanco();
     }
 
     private void conectaBanco(){
@@ -62,23 +67,27 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void pesquisaUsuario(){
-        databaseReference.child("usuario").addValueEventListener(new ValueEventListener() {
+    public void pesquisaUsuario(View v){
+        databaseReference.child("usuario").
+                orderByChild("email")
+                .startAt(editTextBusca.getText().toString())
+                .endAt(editTextBusca.getText().toString() + "\uf8ff")
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Usuario usuario = snapshot.getValue(Usuario.class);
-                    usuarios.add(usuario);
+                    Administrador administrador = snapshot.getValue(Administrador.class);
+                    administradors.add(administrador);
                 }
 
                 arrayAdapterUsuario = new AdapterPesquisa(MainActivity.this,
-                        (ArrayList<Usuario>) usuarios);
+                        (ArrayList<Administrador>) administradors);
                 listView.setAdapter(arrayAdapterUsuario);
 
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        //selecionaUsuario(usuarios.get(i));
+                        //selecionaUsuario(administradors.get(i));
                         //return;
                     }
                 });
@@ -92,7 +101,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void selecionaUsuario(final Usuario usuario){
+    private void selecionaUsuario(final Administrador administrador){
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_logout, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.menu_sair){
+            sharedPreferences = getSharedPreferences("LOGIN", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("LOGIN", "false");
+            editor.apply();
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

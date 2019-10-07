@@ -8,10 +8,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.example.fast_food_admin.modelo.Usuario;
+import com.example.fast_food_admin.modelo.Administrador;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -24,11 +23,13 @@ public class LoginActivity extends AppCompatActivity {
 
     //SharedPreferences
     private SharedPreferences sharedPreferences;
-    private Usuario usuario = new Usuario();
+    private Administrador administrador = new Administrador();
 
     //Banco
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+
+    public Boolean valido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +46,9 @@ public class LoginActivity extends AppCompatActivity {
         if (!Boolean.parseBoolean(resultado)){
             criarLogin();
         }
-        /*else{
+        else {
             finish();
-        }*/
+        }
     }
 
     private void criarLogin(){
@@ -75,26 +76,25 @@ public class LoginActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK){
 
                 if (response.isNewUser()){
-                    this.usuario.setUid(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    this.usuario.setEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-                    this.usuario.setNome(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-                    this.usuario.getVida();
-                    this.usuario.getPontos();
-                    this.usuario.setValido(false);
+                    this.administrador.setUid(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    this.administrador.setEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    this.administrador.setNome(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                    this.administrador.getVida();
+                    this.administrador.getPontos();
+                    this.administrador.setValido(false);
 
                         databaseReference
-                                .child("usuario")
-                                .child(usuario.getUid())
-                                .setValue(usuario);
+                                .child("administrador")
+                                .child(administrador.getUid())
+                                .setValue(administrador);
                 }
 
                 sharedPreferences = getSharedPreferences("LOGIN", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("LOGIN", "true");
-                editor.putString("ID", usuario.getUid());
+                editor.putString("ID", administrador.getUid());
                 editor.apply();
                 finish();
-
             }
 
             else{
@@ -111,4 +111,5 @@ public class LoginActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
     }
+
 }
