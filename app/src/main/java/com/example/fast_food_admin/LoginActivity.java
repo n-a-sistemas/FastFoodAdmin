@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.example.fast_food_admin.modelo.Administrador;
+import com.example.fast_food_admin.modelo.Usuario;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.FirebaseApp;
@@ -23,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
 
     //SharedPreferences
     private SharedPreferences sharedPreferences;
-    private Administrador administrador = new Administrador();
+    private Usuario usuario = new Usuario();
 
     //Banco
     private FirebaseDatabase firebaseDatabase;
@@ -76,23 +76,33 @@ public class LoginActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK){
 
                 if (response.isNewUser()){
-                    this.administrador.setUid(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    this.administrador.setEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-                    this.administrador.setNome(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-                    this.administrador.getVida();
-                    this.administrador.getPontos();
-                    this.administrador.setValido(false);
+                    this.usuario.setUid(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    this.usuario.setEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    this.usuario.setNome(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                    this.usuario.getVida();
+                    this.usuario.getPontos();
+                    this.usuario.setValido(false);
+                    this.usuario.setAdmin(false);
 
                         databaseReference
-                                .child("administrador")
-                                .child(administrador.getUid())
-                                .setValue(administrador);
+                                .child("usuario")
+                                .child(usuario.getUid())
+                                .setValue(usuario);
                 }
 
                 sharedPreferences = getSharedPreferences("LOGIN", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("LOGIN", "true");
-                editor.putString("ID", administrador.getUid());
+                if (usuario.isAdmin()) {
+                    editor.putString("ADMIN", "true");
+                    editor.putString("LOGIN", "true");
+                }
+                else {
+                    editor.putString("ADMIN", "false");
+                    editor.putString("LOGIN", "false");
+                }
+
+                editor.putString("ID", usuario.getUid());
+
                 editor.apply();
                 finish();
             }

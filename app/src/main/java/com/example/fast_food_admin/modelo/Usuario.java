@@ -1,24 +1,26 @@
 package com.example.fast_food_admin.modelo;
 
-public class Administrador {
+public class Usuario {
     private String uid;
     private String nome;
     private String email;
     private boolean valido;
     private Integer vida;
     private Integer pontos;
+    private boolean admin;
 
-    public Administrador(){
+    public Usuario(){
 
     }
 
-    public Administrador(String uid, String nome, String email, boolean valido, Integer vida, Integer pontos) {
+    public Usuario(String uid, String nome, String email, boolean valido, Integer vida, Integer pontos, Boolean admin) {
         this.uid = uid;
         this.nome = nome;
         this.email = email;
         this.valido = valido;
         this.vida = vida;
         this.pontos = pontos;
+        this.admin = admin;
     }
 
     public String getUid() {
@@ -69,4 +71,11 @@ public class Administrador {
         this.pontos = pontos;
     }
 
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 }

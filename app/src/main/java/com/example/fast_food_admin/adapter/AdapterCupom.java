@@ -12,17 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.fast_food_admin.R;
-import com.example.fast_food_admin.modelo.Administrador;
+import com.example.fast_food_admin.modelo.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterCupom extends ArrayAdapter <Administrador>{
+public class AdapterCupom extends ArrayAdapter <Usuario>{
 
     private Context context;
-    private List<Administrador> admin;
+    private List<Usuario> admin;
 
-    public AdapterCupom (Context context, ArrayList<Administrador> admin){
+    public AdapterCupom (Context context, ArrayList<Usuario> admin){
 
         super(context, 0, admin);
         this.context = context;
@@ -40,7 +40,7 @@ public class AdapterCupom extends ArrayAdapter <Administrador>{
                     .inflate(R.layout.layout_resgata_cupom, parent, false);
         }
 
-        Administrador adminCupom = admin.get(position);
+        Usuario adminCupom = admin.get(position);
 
         TextView nomeCupom = listaCupomAdmin.findViewById(R.id.text_view_nome);
         nomeCupom.setText(adminCupom.getNome());

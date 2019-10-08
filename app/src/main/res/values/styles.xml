@@ -16,7 +16,7 @@
     </style>
 
     <style name="LoginAdmin" parent="FirebaseUI">
-        <item name="android:windowBackground">@drawable/loginadmin</item>
+        <item name="android:windowBackground">@drawable/descansoadmin</item>
         <item name="windowNoTitle">true</item>
     </style>
 
