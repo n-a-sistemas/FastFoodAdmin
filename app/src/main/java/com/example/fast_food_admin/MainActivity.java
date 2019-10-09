@@ -92,11 +92,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                  //     ID = usuarios.get(i).getUid();
+                    String sla = usuarios.get(i).getUid();
 
 
 
                        Intent intent = new Intent(MainActivity.this , CupomActivity.class);
+                       //intent.putExtra(sla);
                        startActivity(intent);
 
                         return;
