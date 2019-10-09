@@ -1,5 +1,7 @@
 package com.example.fast_food_admin.modelo;
 
+import java.util.List;
+
 public class Usuario {
     private String uid;
     private String nome;
@@ -8,12 +10,13 @@ public class Usuario {
     private Integer vida;
     private Integer pontos;
     private boolean admin;
+    private List<Cupom> cupons;
 
     public Usuario(){
 
     }
 
-    public Usuario(String uid, String nome, String email, boolean valido, Integer vida, Integer pontos, Boolean admin) {
+    public Usuario(String uid, String nome, String email, boolean valido, Integer vida, Integer pontos, boolean admin, List<Cupom> cupons) {
         this.uid = uid;
         this.nome = nome;
         this.email = email;
@@ -21,6 +24,7 @@ public class Usuario {
         this.vida = vida;
         this.pontos = pontos;
         this.admin = admin;
+        this.cupons = cupons;
     }
 
     public String getUid() {
@@ -77,5 +81,27 @@ public class Usuario {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public List<Cupom> getCupons() {
+        return cupons;
+    }
+
+    public void setCupons(List<Cupom> cupons) {
+        this.cupons = cupons;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "uid='" + uid + '\'' +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                ", valido=" + valido +
+                ", vida=" + vida +
+                ", pontos=" + pontos +
+                ", admin=" + admin +
+                ", cupons=" + cupons +
+                '}';
     }
 }

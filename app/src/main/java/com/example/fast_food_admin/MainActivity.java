@@ -1,11 +1,9 @@
 package com.example.fast_food_admin;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.fast_food_admin.adapter.AdapterPesquisa;
+import com.example.fast_food_admin.modelo.Cupom;
 import com.example.fast_food_admin.modelo.Usuario;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private List<Usuario> usuarios = new ArrayList<>();
     private ArrayAdapter<Usuario> arrayAdapterUsuario;
-
+    public String  ID;
     //SharedPreferences
     private SharedPreferences sharedPreferences;
 
@@ -75,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 .startAt(editTextBusca.getText().toString())
                 .endAt(editTextBusca.getText().toString() + "\uf8ff")
                 .addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
@@ -89,8 +89,18 @@ public class MainActivity extends AppCompatActivity {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        selecionaUsuario();
+
+
+
+                  //     ID = usuarios.get(i).getUid();
+
+
+
+                       Intent intent = new Intent(MainActivity.this , CupomActivity.class);
+                       startActivity(intent);
+
                         return;
+
                     }
                 });
             }
@@ -101,31 +111,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void selecionaUsuario(){
-
-        Intent intent = new Intent(MainActivity.this, ResgataActivity.class);
-        //intent.putExtra("USUARIO", );
-        startActivity(intent);
-    }
-
-    public void excluirDado(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.app_name);
-        builder.setMessage("Você deseja resgatar esse cupom?");
-        builder.setIcon(R.drawable.hamburguer);
-        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                databaseReference.child("usuario").child("cupons").removeValue();
-                //trabalhar melhor nessa parte, preciso excluir do banco apenas dos
-                //cupons
-
-
-            }
-        });
     }
 
     @Override
@@ -149,4 +134,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

@@ -79,8 +79,6 @@ public class LoginActivity extends AppCompatActivity {
                     this.usuario.setUid(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     this.usuario.setEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
                     this.usuario.setNome(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-                    this.usuario.getVida();
-                    this.usuario.getPontos();
                     this.usuario.setValido(false);
                     this.usuario.setAdmin(false);
 
@@ -92,19 +90,19 @@ public class LoginActivity extends AppCompatActivity {
 
                 sharedPreferences = getSharedPreferences("LOGIN", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                if (usuario.isAdmin()) {
-                    editor.putString("ADMIN", "true");
+                editor.putString("LOGIN", "true");
+                editor.putString("ID", usuario.getUid());
+                editor.apply();
+                finish();
+
+                /*if (usuario.isAdmin()) {
+                    //editor.putString("ADMIN", "true");
                     editor.putString("LOGIN", "true");
                 }
                 else {
-                    editor.putString("ADMIN", "false");
+                    //editor.putString("ADMIN", "false");
                     editor.putString("LOGIN", "false");
-                }
-
-                editor.putString("ID", usuario.getUid());
-
-                editor.apply();
-                finish();
+                }*/
             }
 
             else{
