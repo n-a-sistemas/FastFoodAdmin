@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
 
                        Intent intent = new Intent(MainActivity.this , CupomActivity.class);
-                       //intent.putExtra(sla);
                        startActivity(intent);
 
                         return;
@@ -133,8 +132,19 @@ public class MainActivity extends AppCompatActivity {
             editor.apply();
             finish();
         }
+        else if (id == R.id.menu_perguntas){
+
+            Intent intent = new Intent(MainActivity.this, AddPerguntasActivity.class);
+            startActivity(intent);
+
+        }
         return super.onOptionsItemSelected(item);
+
+
+
     }
+
+
 
 
 }

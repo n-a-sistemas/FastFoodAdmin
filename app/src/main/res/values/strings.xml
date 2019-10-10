@@ -3,4 +3,17 @@
     <string name="edit_busca">Digite o nome ou email...</string>
     <string name="btn_pesquisa">Pesquisar</string>
     <string name="menu_logout">Logout</string>
+    <string name="menu_pergunta">Adicionar perguntas</string>
+    <string name="dig_pergunta">Pergunta:</string>
+    <string name="dig_resp1">Resposta 1:</string>
+    <string name="dig_resp2">Resposta 2:</string>
+    <string name="dig_resp3">Resposta 3:</string>
+    <string name="dig_resp4">Resposta 4:</string>
+    <string name="dig_resp5">Resp. Certa:</string>
+    <string name="edit_pergunta">Digite uma pergunta...</string>
+    <string name="dig_resposta">Digite uma resposta...</string>
+    <string name="txt_add_perg">Adicione suas perguntas</string>
+    <string name="btn_salvar">Salvar</string>
+
+
 </resources>
