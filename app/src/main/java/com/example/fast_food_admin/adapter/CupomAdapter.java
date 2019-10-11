@@ -43,7 +43,7 @@ public class CupomAdapter extends ArrayAdapter {
         Cupom cupomAtual = cupons.get(position);
 
         TextView nome = listaItem.findViewById(R.id.text_view_nome);
-        nome.setText(cupomAtual.getUuid());
+        nome.setText(cupomAtual.getToken());
 
         TextView ID = listaItem.findViewById(R.id.text_view_codigo);
         ID.setText(cupomAtual.getNome());

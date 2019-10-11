@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                        Intent intent = new Intent(MainActivity.this , CupomActivity.class);
+                       intent.putExtra("IDC",sla);
                        startActivity(intent);
 
                         return;

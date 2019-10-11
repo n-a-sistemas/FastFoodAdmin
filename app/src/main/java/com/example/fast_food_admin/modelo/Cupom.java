@@ -5,15 +5,17 @@ public class Cupom {
     private String nome;
     private String preco;
     private String uuid;
+    private String token = "falso";
 
     public Cupom(){
 
     }
 
-    public Cupom(String nome, String preco, String uuid) {
+    public Cupom(String nome, String preco, String uuid, String token) {
         this.nome = nome;
         this.preco = preco;
         this.uuid = uuid;
+        this.token = token;
     }
 
     public String getNome() {
@@ -40,12 +42,21 @@ public class Cupom {
         this.uuid = uuid;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     public String toString() {
         return "Cupom{" +
                 "nome='" + nome + '\'' +
                 ", preco='" + preco + '\'' +
                 ", uuid='" + uuid + '\'' +
+                ", token='" + token + '\'' +
                 '}';
     }
 }
