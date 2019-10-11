@@ -1,6 +1,7 @@
 package com.example.fast_food_admin;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class AddPerguntasActivity extends AppCompatActivity {
@@ -30,6 +33,8 @@ public class AddPerguntasActivity extends AppCompatActivity {
     //Banco
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+
+    private static int j = 0;
 
 
     @Override
@@ -55,9 +60,6 @@ public class AddPerguntasActivity extends AppCompatActivity {
 
     public void adicionaPergunta(View view){
 
-        for (int i = 0; i < 20; i++) {
-
-            Pergunta perg = new Pergunta();
 
             //Pegando os valores dos editTexts
             String pergunta = editTextPergunta.getText().toString();
@@ -65,16 +67,64 @@ public class AddPerguntasActivity extends AppCompatActivity {
             String resposta2 = editTextResposta2.getText().toString();
             String resposta3 = editTextResposta3.getText().toString();
             String resposta4 = editTextResposta4.getText().toString();
-            String resposta5 = editTextRespostaCerta.getText().toString();
+            String respostaCerta = editTextRespostaCerta.getText().toString();
 
-            databaseReference.child(pergunta).child(perg.getUuid()).child(perg.getTitulo_pergunta()).setValue(perg);
-            databaseReference.child(resposta1).child(perg.getUuid()).setValue(perg);
-            databaseReference.child(resposta2).child(perg.getUuid()).setValue(perg);
-            databaseReference.child(resposta3).child(perg.getUuid()).setValue(perg);
-            databaseReference.child(resposta4).child(perg.getUuid()).setValue(perg);
-            databaseReference.child(resposta5).child(perg.getUuid()).child(perg.getResposta_correta()).setValue(perg);
+            List<String> lista = new ArrayList<>();
+            lista.add(resposta1);
+            lista.add(resposta2);
+            lista.add(resposta3);
+            lista.add(resposta4);
+            lista.add(respostaCerta);
 
+            if (!pergunta.equals("") && !resposta1.equals("") && !resposta2.equals("")
+                    && !resposta3.equals("") && !resposta4.equals("") && !respostaCerta.equals("")){
 
-        }
+            lePerguntas(respostaCerta, pergunta, lista);
+
+            }
+            else{
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.app_name);
+                builder.setMessage("Você precisa preencher todos os campos!");
+                builder.setIcon(R.drawable.hamburguer);
+                AlertDialog alert  = builder.create();
+                alert.show();
+            }
+
+            limpaPerguntas();
+    }
+
+    private void lePerguntas(final String respostaCerta, final String pergunta, final List lista){
+        databaseReference.child("Perguntas").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                    Pergunta perguntas = snapshot.getValue(Pergunta.class);
+
+                    if (perguntas.getUuid() == j){
+                        j++;
+                    }
+                }
+                String id = "" + j + "";
+                Pergunta perg = new Pergunta(j, respostaCerta, pergunta, lista);
+                databaseReference.child("Perguntas").child(id).setValue(perg);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void limpaPerguntas(){
+
+        editTextPergunta.setText("");
+        editTextResposta1.setText("");
+        editTextResposta2.setText("");
+        editTextResposta3.setText("");
+        editTextResposta4.setText("");
+        editTextRespostaCerta.setText("");
     }
 }
