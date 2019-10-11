@@ -1,11 +1,16 @@
 package com.example.fast_food_admin;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -28,7 +33,7 @@ public class CupomActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
     //ListView
-    private List<Cupom> tarefas = new ArrayList<Cupom>();
+    private List<Cupom> cupoms = new ArrayList<Cupom>();
     private ArrayAdapter<Cupom> arrayAdapterUsuario;
     private ListView listView;
 
@@ -56,23 +61,34 @@ public class CupomActivity extends AppCompatActivity {
 
     private void eventoBanco(){
 
+        Intent intent = getIntent();
+        final String id = intent.getStringExtra("IDC");
 
 
-
-        databaseReference.child("usuario").child("S5NGdaBCCfYQvBBPMw01UWa2G4B2").child("cupons").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("usuario").child(id).child("cupons").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                tarefas.clear();
+                cupoms.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
 
                     jorge = snapshot.getValue(Cupom.class);
-                    tarefas.add(jorge);
+                    cupoms.add(jorge);
                 }
 
                 arrayAdapterUsuario = new CupomAdapter(CupomActivity.this,
-                                                                    (ArrayList<Cupom>) tarefas);
+                                                                    (ArrayList<Cupom>) cupoms);
                 listView.setAdapter(arrayAdapterUsuario);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                        cupoms.remove(i);
+                        excluiCupom(cupoms);
+
+                    }
+                });
             }
 
             @Override
@@ -81,6 +97,37 @@ public class CupomActivity extends AppCompatActivity {
             }
         });
 
+
+
+    }
+    private void excluiCupom(final List<Cupom> cupoms){
+
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.app_name);
+        builder.setMessage("Você deseja comprar esse cupom?");
+        builder.setIcon(R.drawable.hamburguer);
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                Intent intent = getIntent();
+
+                final String idUsuario = intent.getStringExtra("IDC");
+
+                databaseReference.child("usuario").child(idUsuario).child("cupons").setValue(cupoms);
+
+            }
+        });
+        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
 
 
     }
