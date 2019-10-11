@@ -35,6 +35,7 @@ public class AddPerguntasActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
     private static int j = 0;
+    private List<Pergunta> perguntaList = new ArrayList<>();
 
 
     @Override
@@ -60,54 +61,65 @@ public class AddPerguntasActivity extends AppCompatActivity {
 
     public void adicionaPergunta(View view){
 
+        //Pegando os valores dos editTexts
 
-            //Pegando os valores dos editTexts
-            String pergunta = editTextPergunta.getText().toString();
-            String resposta1 = editTextResposta1.getText().toString();
-            String resposta2 = editTextResposta2.getText().toString();
-            String resposta3 = editTextResposta3.getText().toString();
-            String resposta4 = editTextResposta4.getText().toString();
-            String respostaCerta = editTextRespostaCerta.getText().toString();
+        String pergunta = editTextPergunta.getText().toString();
+        String resposta1 = editTextResposta1.getText().toString();
+        String resposta2 = editTextResposta2.getText().toString();
+        String resposta3 = editTextResposta3.getText().toString();
+        String resposta4 = editTextResposta4.getText().toString();
+        String respostaCerta = editTextRespostaCerta.getText().toString();
+/*
+        String pergunta = "a";
+        String resposta1 = "b";
+        String resposta2 = "c";
+        String resposta3 = "d";
+        String resposta4 = "e";
+        String respostaCerta = "f";*/
 
-            List<String> lista = new ArrayList<>();
-            lista.add(resposta1);
-            lista.add(resposta2);
-            lista.add(resposta3);
-            lista.add(resposta4);
-            lista.add(respostaCerta);
+        List<String> lista = new ArrayList<>();
+        lista.add(resposta1);
+        lista.add(resposta2);
+        lista.add(resposta3);
+        lista.add(resposta4);
+        lista.add(respostaCerta);
 
-            if (!pergunta.equals("") && !resposta1.equals("") && !resposta2.equals("")
-                    && !resposta3.equals("") && !resposta4.equals("") && !respostaCerta.equals("")){
-
+        if (!pergunta.equals("") && !resposta1.equals("") && !resposta2.equals("")
+                && !resposta3.equals("") && !resposta4.equals("") && !respostaCerta.equals("")){
             lePerguntas(respostaCerta, pergunta, lista);
-
-            }
-            else{
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(R.string.app_name);
-                builder.setMessage("Você precisa preencher todos os campos!");
-                builder.setIcon(R.drawable.hamburguer);
-                AlertDialog alert  = builder.create();
-                alert.show();
-            }
-
-            limpaPerguntas();
+        }
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.app_name);
+            builder.setMessage("Você precisa preencher todos os campos!");
+            builder.setIcon(R.drawable.hamburguer);
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        limpaPerguntas();
     }
 
     private void lePerguntas(final String respostaCerta, final String pergunta, final List lista){
+        perguntaList.clear();
+        j = 0;
         databaseReference.child("Perguntas").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-
                     Pergunta perguntas = snapshot.getValue(Pergunta.class);
-
-                    if (perguntas.getUuid() == j){
+                    perguntaList.add(perguntas);
+                }
+                for (int i = 0; i < perguntaList.size(); i++) {
+                    String id = "" + j + "";
+                    if (perguntaList.get(i).getUuid().equals(id)) {
                         j++;
+                    }
+                    else if (!perguntaList.get(i).getUuid().equals(id)){
+                        break;
                     }
                 }
                 String id = "" + j + "";
-                Pergunta perg = new Pergunta(j, respostaCerta, pergunta, lista);
+                Pergunta perg = new Pergunta(id, respostaCerta, pergunta, lista);
                 databaseReference.child("Perguntas").child(id).setValue(perg);
             }
 
@@ -117,6 +129,7 @@ public class AddPerguntasActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void limpaPerguntas(){
 

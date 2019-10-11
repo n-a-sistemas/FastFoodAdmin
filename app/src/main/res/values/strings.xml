@@ -14,6 +14,5 @@
     <string name="dig_resposta">Digite uma resposta...</string>
     <string name="txt_add_perg">Adicione suas perguntas</string>
     <string name="btn_salvar">Salvar</string>
-
-
+    <string name="menu_apagar">Apagar perguntas</string>
 </resources>

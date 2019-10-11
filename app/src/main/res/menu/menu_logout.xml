@@ -8,4 +8,5 @@
     <item
         android:id="@+id/menu_perguntas"
         android:title="@string/menu_pergunta" />
+    <item android:title="@string/menu_apagar" />
 </menu>
