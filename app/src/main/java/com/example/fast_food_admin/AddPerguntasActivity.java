@@ -69,13 +69,6 @@ public class AddPerguntasActivity extends AppCompatActivity {
         String resposta3 = editTextResposta3.getText().toString();
         String resposta4 = editTextResposta4.getText().toString();
         String respostaCerta = editTextRespostaCerta.getText().toString();
-/*
-        String pergunta = "a";
-        String resposta1 = "b";
-        String resposta2 = "c";
-        String resposta3 = "d";
-        String resposta4 = "e";
-        String respostaCerta = "f";*/
 
         List<String> lista = new ArrayList<>();
         lista.add(resposta1);
@@ -100,27 +93,13 @@ public class AddPerguntasActivity extends AppCompatActivity {
     }
 
     private void lePerguntas(final String respostaCerta, final String pergunta, final List lista){
-        perguntaList.clear();
         j = 0;
         databaseReference.child("Perguntas").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Pergunta perguntas = snapshot.getValue(Pergunta.class);
-                    perguntaList.add(perguntas);
-                }
-                for (int i = 0; i < perguntaList.size(); i++) {
-                    String id = "" + j + "";
-                    if (perguntaList.get(i).getUuid().equals(id)) {
-                        j++;
-                    }
-                    else if (!perguntaList.get(i).getUuid().equals(id)){
-                        break;
-                    }
-                }
-                String id = "" + j + "";
-                Pergunta perg = new Pergunta(id, respostaCerta, pergunta, lista);
-                databaseReference.child("Perguntas").child(id).setValue(perg);
+                Long teste = dataSnapshot.getChildrenCount();
+                Pergunta perg = new Pergunta(teste.toString(), respostaCerta, pergunta, lista);
+                databaseReference.child("Perguntas").child(teste.toString()).child(teste.toString()).setValue(perg);
             }
 
             @Override
@@ -129,7 +108,6 @@ public class AddPerguntasActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void limpaPerguntas(){
 
